@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-ProjetoFacuApplication<projeto_facu>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.bruno.projeto_facu.ProjetoFacuApplication",
+            "projectName": "projeto_facu",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

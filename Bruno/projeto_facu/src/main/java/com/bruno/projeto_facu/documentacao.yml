@@ -1,0 +1,102 @@
+openapi: 3.0.2
+info:
+  title: API de Notificações
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+paths:
+  /cep:
+    get:
+      summary: Retorna notificações pendentes com CEP
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/cep'
+    put:
+      summary: Atualiza o status de uma notificação com base no ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/put_noti'
+      responses:
+        '200':
+          description: Atualização bem-sucedida
+        '500':
+          description: Erro no Servidor
+
+  /dje:
+    get:
+      summary: Lista de notificações no DJE
+      responses:
+        '200':
+          description: Sucesso
+    put:
+      summary: Altera o status de notificação
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_notificacao:
+                  type: integer
+                status:
+                  type: string
+                
+      responses:
+        '200':
+          description: Sucesso
+        '500':
+          description: Erro ao editar o processo
+        '409':
+          description: Processo já enviado ou com dados adicionais
+  /notificacao:
+    post:
+      summary: Envio de uma notificação
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/notification'
+      responses:
+        '200':
+          description: Sucesso
+        '500':
+          description: Erro ao enviar o e-mail
+
+components:
+  schemas:
+    cep:
+      type: object
+      properties:
+        id_notificacao:
+          type: integer
+        n_processo:
+          type: string
+        statuss:
+          type: string
+        motivo_de_notificacao:
+          type: string
+    put_noti:
+      type: object
+      properties:
+        id_notificacao:
+          type: integer
+        status:
+          type: string
+    notification:
+      type: object
+      properties:
+        n_processo:
+          type: string
+        motivo_notificacao:
+          type: string

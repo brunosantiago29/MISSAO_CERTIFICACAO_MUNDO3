@@ -1,0 +1,82 @@
+CREATE TABLE dbo.PROCESSO
+(n_processo varchar(20) PRIMARY KEY,
+orgao_julgado varchar(20) not null,
+valor_causa varchar(50) not null,
+nivel_sigilo varchar(50) not null,
+prioridade varchar(50) not null
+);
+GO
+
+CREATE TABLE dbo.PARTE
+(id_parte int not null IDENTITY(1,1),
+n_processo varchar(20) not null,
+cpf varchar(50),
+cnpj varchar(50),
+parte varchar(05) not null,
+nome varchar(50) not null,
+e_mail varchar(50),
+cep varchar(50),
+numero varchar(50)
+CONSTRAINT PK_PARTE PRIMARY KEY (id_parte),
+CONSTRAINT FK_PROCESSO_P	FOREIGN KEY (n_processo)
+REFERENCES dbo.PROCESSO,
+CONSTRAINT CHK_PARTES CHECK (parte IN ('autor', 'reu', 'testemunha'))
+);
+GO
+
+CREATE TABLE dbo.NOTIFICACAO
+(id_notificacao int not null IDENTITY(1,1),
+n_processo varchar(20) not null,
+statuss varchar(50) not null,
+motivo_de_notificacao varchar(100) not null
+CONSTRAINT PK_NOTIFICADO PRIMARY KEY (id_notificacao),
+CONSTRAINT FK_PROCESSO_N	FOREIGN KEY (n_processo)
+REFERENCES dbo.PROCESSO,
+CONSTRAINT CHK_STATUSS CHECK (statuss IN ('pendente', 'enviado'))
+);
+GO
+
+
+
+INSERT INTO dbo.PROCESSO(n_processo, orgao_julgado, valor_causa, nivel_sigilo, prioridade)
+VALUES ('99999999999999999999', 'Tribunal de Justiça', 100000.00, 'Médio', 'Alta');
+INSERT INTO dbo.PROCESSO(n_processo, orgao_julgado, valor_causa, nivel_sigilo, prioridade)
+VALUES ('88888888888888888888', 'Tribunal de Justiça', 1000000.00, 'Médio', 'Alta');
+INSERT INTO dbo.PROCESSO(n_processo, orgao_julgado, valor_causa, nivel_sigilo, prioridade)
+VALUES ('77777777777777777777', 'Tribunal de Justiça', 10000100.00, 'Médio', 'Alta');
+INSERT INTO dbo.PROCESSO(n_processo, orgao_julgado, valor_causa, nivel_sigilo, prioridade)
+VALUES ('66666666666666666666', 'Tribunal de Justiça', 10000100.00, 'Médio', 'Alta');
+
+INSERT INTO dbo.PARTE(n_processo, cpf, cnpj, parte, nome, e_mail, cep, numero)
+VALUES ('99999999999999999999', '12345678900', NULL, 'reu', 'Fulano cep', 'fulano@example.com', '17603856', '123');
+INSERT INTO dbo.PARTE(n_processo, cpf, cnpj, parte, nome, e_mail, cep, numero)
+VALUES ('99999999999999999999', '888585', NULL, 'autor', 'Fulano cep autor', 'fulano@example.com', '12345678', '123');
+INSERT INTO dbo.PARTE(n_processo, cpf, cnpj, parte, nome, e_mail, cep, numero)
+VALUES ('88888888888888888888', NULL, '12345678900', 'reu', 'Fulano email', 'fulano@example.com', NULL, NULL);
+INSERT INTO dbo.PARTE(n_processo, cpf, cnpj, parte, nome, e_mail, cep, numero)
+VALUES ('88888888888888888888', NULL, '9292929292', 'autor', 'Fulano email autor', 'fulano@example.com', NULL, NULL);
+INSERT INTO dbo.PARTE(n_processo, cpf, cnpj, parte, nome, e_mail, cep, numero)
+VALUES ('77777777777777777777', NULL, '12345678900', 'reu', 'Fulano DJe', NULL, NULL, NULL);
+INSERT INTO dbo.PARTE(n_processo, cpf, cnpj, parte, nome, e_mail, cep, numero)
+VALUES ('77777777777777777777', NULL, '12345678900', 'autor', 'Fulano DJe autor', NULL, NULL, NULL);
+INSERT INTO dbo.PARTE(n_processo, cpf, cnpj, parte, nome, e_mail, cep, numero)
+VALUES ('66666666666666666666', '12345678900', NULL, 'reu', 'Fulano cep', 'fulano@example.com', '6387325', '123');
+INSERT INTO dbo.PARTE(n_processo, cpf, cnpj, parte, nome, e_mail, cep, numero)
+VALUES ('66666666666666666666', '888585', NULL, 'autor', 'Fulano cep autor', 'fulano@example.com', '12345678', '123');
+
+INSERT INTO notificacao (n_processo, statuss, motivo_de_notificacao)
+VALUES ('99999999999999999999', 'pendente', 'Prazo de pagamento da sentença');
+INSERT INTO notificacao (n_processo, statuss, motivo_de_notificacao)
+VALUES ('88888888888888888888', 'pendente', 'Prazo de pagamento da sentença');
+INSERT INTO notificacao (n_processo, statuss, motivo_de_notificacao)
+VALUES ('77777777777777777777', 'pendente', 'Prazo de pagamento da sentença');
+INSERT INTO notificacao (n_processo, statuss, motivo_de_notificacao)
+VALUES ('66666666666666666666', 'pendente', 'Prazo de pagamento da sentença');
+
+
+select * from dbo.PROCESSO
+select * from dbo.PARTE
+select * from dbo.NOTIFICACAO
+DROP TABLE	dbo.PROCESSO
+DROP TABLE	dbo.PARTE
+DROP TABLE	dbo.NOTIFICACAO
